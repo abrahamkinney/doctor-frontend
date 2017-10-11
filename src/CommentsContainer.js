@@ -78,29 +78,34 @@ class CommentsContainer extends Component {
   render() {
     return (
       <div>
-        <button className="newCommentButton"
-          onClick={this.addNewComment} >
-          New Comment
-        </button>
-        <span className="notification">
-          {this.state.notification}
-        </span>
-        {this.state.comments.map((comment) => {
-          if(this.state.editingCommentId === comment.id) {
-            return(<CommentForm
-                    comment={comment}
-                    key={comment.id}
-                    updateComment={this.updateComment}
-                    resetNotification={this.resetNotification} />)
-          } else {
-            return (<Comment
+        <div className="new-comment-container">
+          <button className="new-comment-button"
+            onClick={this.addNewComment} >
+            New Comment
+          </button>
+          <br/>
+          <span className="notification">
+            {this.state.notification}
+          </span>
+        </div>
+        <div className="comment-block">
+          {this.state.comments.map((comment) => {
+            if(this.state.editingCommentId === comment.id) {
+              return(<CommentForm
                       comment={comment}
                       key={comment.id}
                       updateComment={this.updateComment}
-                      onDelete={this.deleteComment}
-                      onClick={this.enableEditing} resetNotification={this.resetNotification} />)
-          }
-        })}
+                      resetNotification={this.resetNotification} />)
+            } else {
+              return (<Comment
+                        comment={comment}
+                        key={comment.id}
+                        updateComment={this.updateComment}
+                        onDelete={this.deleteComment}
+                        onClick={this.enableEditing} resetNotification={this.resetNotification} />)
+            }
+          })}
+        </div>
       </div>
     );
   }
