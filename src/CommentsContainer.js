@@ -9,7 +9,8 @@ class CommentsContainer extends Component {
     super(props)
     this.state = {
       comments: [],
-      editingCommentId: null
+      editingCommentId: null,
+      notification: ''
     }
   }
 
@@ -45,6 +46,21 @@ class CommentsContainer extends Component {
     .catch(error => console.log(error))
   }
 
+  updateComment = (comment) => {
+    const commentIndex = this.state.comments.findIndex(x => x.id === comment.id)
+    const comments = update(this.state.comments, {
+      [commentIndex]: { $set: comment }
+    })
+    this.setState({
+      comments: comments,
+      notification: 'Comment Saved!'
+    })
+  }
+
+  resetNotification = () => {
+    this.setState({notification: ''})
+  }
+
   render() {
     return (
       <div>
@@ -52,11 +68,14 @@ class CommentsContainer extends Component {
           onClick={this.addNewComment} >
           New Comment
         </button>
+        <span className="notification">
+          {this.state.notification}
+        </span>
         {this.state.comments.map((comment) => {
           if(this.state.editingCommentId === comment.id) {
-            return(<CommentForm comment={comment} key={comment.id} />)
+            return(<CommentForm comment={comment} key={comment.id} updateComment={this.updateComment} resetNotification={this.resetNotification} />)
           } else {
-            return (<Comment comment={comment} key={comment.id} />)
+            return (<Comment comment={comment} key={comment.id} updateComment={this.updateComment} resetNotification={this.resetNotification} />)
           }
         })}
       </div>

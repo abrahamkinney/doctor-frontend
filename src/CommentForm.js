@@ -12,6 +12,7 @@ class CommentForm extends Component {
 
   handleInput = (e) => {
     this.setState({[e.target.name]: e.target.value})
+    this.props.resetNotification()
   }
 
   handleBlur = () => {
@@ -27,6 +28,7 @@ class CommentForm extends Component {
       })
     .then(response => {
       console.log(response)
+      this.props.updateComment(response.data)
     })
     .catch(error => console.log(error))
   }
