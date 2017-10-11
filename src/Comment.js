@@ -6,9 +6,16 @@ class Comment extends Component {
     this.props.onClick(this.props.comment.id)
   }
 
+  handleDelete = () => {
+    this.props.onDelete(this.props.comment.id)
+  }
+
   render () {
     return(
       <div className="comment" key={this.props.comment.id}>
+        <span className="delete" onClick={this.handleDelete}>
+          x
+        </span>
         <h4 onClick={this.handleClick}>
           Rating: {this.props.comment.rating}
         </h4>

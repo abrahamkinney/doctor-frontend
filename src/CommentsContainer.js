@@ -65,6 +65,16 @@ class CommentsContainer extends Component {
     this.setState({editingCommentId: id})
   }
 
+  deleteComment = (id) => {
+    axios.delete(`http://localhost:3001/api/v1/comments/${id}`)
+    .then(response => {
+      const commentIndex = this.state.comments.findIndex(x => x.id === id)
+      const comments = update(this.state.comments, { $splice: [[commentIndex, 1]]})
+      this.setState({comments: comments})
+    })
+    .catch(error => console.log(error))
+  }
+
   render() {
     return (
       <div>
@@ -77,9 +87,18 @@ class CommentsContainer extends Component {
         </span>
         {this.state.comments.map((comment) => {
           if(this.state.editingCommentId === comment.id) {
-            return(<CommentForm comment={comment} key={comment.id} updateComment={this.updateComment} resetNotification={this.resetNotification} />)
+            return(<CommentForm
+                    comment={comment}
+                    key={comment.id}
+                    updateComment={this.updateComment}
+                    resetNotification={this.resetNotification} />)
           } else {
-            return (<Comment comment={comment} key={comment.id} updateComment={this.updateComment} onClick={this.enableEditing} resetNotification={this.resetNotification} />)
+            return (<Comment
+                      comment={comment}
+                      key={comment.id}
+                      updateComment={this.updateComment}
+                      onDelete={this.deleteComment}
+                      onClick={this.enableEditing} resetNotification={this.resetNotification} />)
           }
         })}
       </div>
