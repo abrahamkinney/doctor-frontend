@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Comment from './Comment'
+import update from 'immutability-helper'
+import CommentForm from './CommentForm'
 
 class CommentsContainer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      comments: []
+      comments: [],
+      editingCommentId: null
     }
   }
 
@@ -31,6 +34,13 @@ class CommentsContainer extends Component {
     )
     .then(response => {
       console.log(response)
+      const comments = update(this.state.comments, {
+        $splice: [[0, 0, response.data]]
+      })
+      this.setState({
+        comments: comments,
+        editingCommentId: response.data.id
+      })
     })
     .catch(error => console.log(error))
   }
@@ -43,7 +53,11 @@ class CommentsContainer extends Component {
           New Comment
         </button>
         {this.state.comments.map((comment) => {
-          return (<Comment comment={comment} key={comment.id} />)
+          if(this.state.editingCommentId === comment.id) {
+            return(<CommentForm comment={comment} key={comment.id} />)
+          } else {
+            return (<Comment comment={comment} key={comment.id} />)
+          }
         })}
       </div>
     );
