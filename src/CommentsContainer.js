@@ -9,7 +9,7 @@ class CommentsContainer extends Component {
     super(props)
     this.state = {
       comments: [],
-      editingCommentId: null,
+      editingCommentId: "",
       notification: ''
     }
   }
@@ -61,6 +61,10 @@ class CommentsContainer extends Component {
     this.setState({notification: ''})
   }
 
+  enableEditing = (id) => {
+    this.setState({editingCommentId: id})
+  }
+
   render() {
     return (
       <div>
@@ -75,7 +79,7 @@ class CommentsContainer extends Component {
           if(this.state.editingCommentId === comment.id) {
             return(<CommentForm comment={comment} key={comment.id} updateComment={this.updateComment} resetNotification={this.resetNotification} />)
           } else {
-            return (<Comment comment={comment} key={comment.id} updateComment={this.updateComment} resetNotification={this.resetNotification} />)
+            return (<Comment comment={comment} key={comment.id} updateComment={this.updateComment} onClick={this.enableEditing} resetNotification={this.resetNotification} />)
           }
         })}
       </div>
