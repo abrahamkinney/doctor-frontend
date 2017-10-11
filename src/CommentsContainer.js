@@ -10,7 +10,8 @@ class CommentsContainer extends Component {
     this.state = {
       comments: [],
       editingCommentId: "",
-      notification: ''
+      notification: '',
+      suggestions: ''
     }
   }
 
@@ -55,6 +56,12 @@ class CommentsContainer extends Component {
       comments: comments,
       notification: 'Comment Saved!'
     })
+    this.Updatesuggestions();
+
+  }
+
+  Updatesuggestions = () => {
+    this.setState({suggestions: "You may also like Dr. Kevin Whateve, Dr. Steve Fixit"})
   }
 
   resetNotification = () => {
@@ -86,6 +93,9 @@ class CommentsContainer extends Component {
           <br/>
           <span className="notification">
             {this.state.notification}
+          </span>
+          <span className="suggestions">
+            {this.state.suggestions}
           </span>
         </div>
         <div className="comment-block">
